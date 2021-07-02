@@ -1,23 +1,31 @@
 
-const initial= JSON.parse(localStorage.getItem('database')) ||{'sahil':{'name':'sahil','products':{"1":{'name':'prduct1','description':"empty",price:200,'auantity':2,image:'url'}}}}
+const initial= JSON.parse(localStorage.getItem('database')) ||{'sahil':{'name':'sahil','products':{}}}
 
 const Reducer=(state=initial,action)=>{
+    let updatedData
     switch (action.type){
         case 'signup':
-            alert()
             const rest=action.payload.rest;
             let Email={}
             Email[action.payload.email]=rest;
-            const updatedData={...state,...Email};
+             updatedData={...state,...Email};
             localStorage.setItem('database',JSON.stringify(updatedData))
             return updatedData;
 
         case 'addProd':
+            console.log(action.payload)
             const userName=action.payload.email;
             const id=action.payload.product_id;
             const product_info=action.payload.product_info;
-            return {...state,userName:{...state.userName,products:{...state.userName.products,id:product_info}}}
+            const data={};
+            data[id]=product_info;
+            updatedData={...state[userName],products:{...state[userName].products,...data}}
+            state[userName]=updatedData
+            localStorage.setItem('database',JSON.stringify(state))
+            return state;
+
         default:
+
             return state;
             
     }
@@ -25,8 +33,4 @@ const Reducer=(state=initial,action)=>{
 
 }
 export default  Reducer;
-// •	Name (Required)
-// •	Description (Optional)
-// •	Price (Required, Decimal)
-// •	Quantity ( Required, Number)
-// •	Image (Optional, user image url) 
+

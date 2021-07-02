@@ -1,0 +1,30 @@
+.modal-container{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000ab
+}
+.main-container{
+    position: relative;
+    width: 300px;
+    /* height: 300px; */
+    margin: auto;
+    margin-top: 50px;
+    background: white;
+}
+
+.edit-modal-container{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000ab
+}
+
+.edit-main-container{
+    position: relative;
+    width: 300px;
+    /* height: 300px; */
+    margin: auto;
+    margin-top: 50px;
+    background: white;
+}
