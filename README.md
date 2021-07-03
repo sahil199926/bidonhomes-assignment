@@ -1,5 +1,5 @@
 # live link
-https://app.netlify.com/sites/bidonhome-assignment/settings/general
+https://bidonhome-assignment.netlify.app/
 
 # default Log-in Cred
 name: sahil
