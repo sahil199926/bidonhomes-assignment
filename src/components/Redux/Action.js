@@ -1,5 +1,4 @@
 export const AddProd=(email,product_id,product_info)=>{
-    alert()
     console.log(email,product_id,product_info)
     return{type:'addProd',
             payload:{email,product_id,product_info}    

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Signup from '../Signup/Signup';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux'
+import './Login.css'
 function Login() {
     const [name,setName]=useState("");
     const [email,setEmail]=useState("")
@@ -20,14 +21,14 @@ function Login() {
         }
     }
     return (
-        <div>
-            <div>
-                <input placeholder='enter name' value={name} onChange={(e)=>setName(e.target.value)} />
-                <input  placeholder='enter email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
-                <button onClick={CheckCred}>login</button>
+        <div style={{display:'flex',justifyContent:'center',marginTop:"200px"}} >
+            <div className="login-container">
+                <div  className='login-head'>Welcome Please Log-in Here !!</div>
+                <div><input className="login-inp" placeholder='enter name' value={name} onChange={(e)=>setName(e.target.value)} /></div>
+                <div><input className="login-inp"  placeholder='enter email' value={email} onChange={(e)=>setEmail(e.target.value)}/></div>
+                <div><button className="login-btn" onClick={CheckCred}>login</button></div>
             </div>
             <Signup/>
-            <div></div>
         </div>
     )
 }

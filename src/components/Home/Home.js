@@ -1,124 +1,121 @@
 import React, { useEffect, useState } from 'react'
-import {useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux'
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 import './Home.css';
 import SearchBar from '../SearchBar/SearchBar';
 import Modal from '../Modal/Modal';
 import EditModal from '../Modal/EditModal';
 function Home() {
-    const history=useHistory();
-    const LoggedInUser=JSON.parse(localStorage.getItem('currentuser'))
-    const [showModal,setShowModal]=useState(false);
-    const [editModal,setEditModal]=useState(false);
-    const [editProductId,setEditProductId]=useState(null);
-    const [searchInp,setSearchInp]=useState("");
-    const[Maxprice,setMaxPrice]=useState("")
-    const [minPrice,setMinPrice]=useState("")
-    const[maxQuantity,setMaxQuantity]=useState("")
-    const [minquantity,setMinQuantity]=useState("")
-    const [renderData,setRenderData]=useState(null);
-    const user=useSelector(state=>state[LoggedInUser]);
-    const product_id= Object.keys(user.products).length || 0;
-    const logout=()=>{
-            localStorage.setItem('userLogedin',JSON.stringify(false))
-            localStorage.setItem('currentuser',JSON.stringify(null))
-            history.push('/')
+    const history = useHistory();
+    const LoggedInUser = JSON.parse(localStorage.getItem('currentuser'))
+    const [showModal, setShowModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [editProductId, setEditProductId] = useState(null);
+    const [searchInp, setSearchInp] = useState("");
+    const [maxPrice, setMaxPrice] = useState(100000)
+    const [maxQuantity, setMaxQuantity] = useState(100)
+    const [renderData, setRenderData] = useState(null);
+    const user = useSelector(state => state[LoggedInUser]);
+    const [applyFilter, setApplyFilter] = useState(false)
+    const product_id = Object.keys(user.products).length || 0;
+    const logout = () => {
+        localStorage.setItem('userLogedin', JSON.stringify(false))
+        localStorage.setItem('currentuser', JSON.stringify(null))
+        history.push('/')
+    }
+    function Filtered() {
+        let filteredData = [];
+        if (applyFilter) {
+            filteredData = renderData && renderData.filter((itm) => user.products[itm].name.includes(searchInp))
+            setRenderData(filteredData);
         }
-    function Filtered(){
-        const filteredData=Object.keys(user.products).filter((itm)=>user.products[itm].name.includes(searchInp))
-        setRenderData(filteredData);
+        else {
+            filteredData = Object.keys(user.products).filter((itm) => user.products[itm].name.includes(searchInp))
+            setRenderData(filteredData);
+        }
     }
 
-    useEffect(()=>{
+    function filterByPrice() {
+        const filteredData = Object.keys(user.products).filter((itm) => Number(user.products[itm].quantity) <= Number(maxQuantity) && Number(user.products[itm].price) <= Number(maxPrice))
+        setRenderData(filteredData)
+        console.log(filteredData)
+        console.log(
+            maxQuantity,
+            maxPrice)
+    }
+
+    function RenderList({ data }) {
+        return (<div>
+            {
+                data.map((itm, i) => {
+                    return (<div className='product-container'>
+                        <div style={{ width: '30%' }} ><img style={{ width: '111px' }} src={user.products[itm].image} alt='no img' /></div>
+                        <div style={{ width: '70%' }}  >
+                            <div><b>Product Name: </b> {user.products[itm].name}</div>
+                            <div style={{minHeight:"82px",overflow:"hidden",textOverflow:'ellipsis'}} ><b hidden={!user.products[itm].description} >Description: </b> {user.products[itm].description}</div>
+                            <div style={{ display: 'flex' }} >
+                                <div style={{ width: '50%' }}><b>Price: </b> {user.products[itm].price}</div>
+                                <div style={{ width: '50%' }} ><b>Quantity: </b> {user.products[itm].quantity}</div>
+                            </div>
+                        </div>
+                        <div><button className='edit-btn' onClick={() => { setEditModal(true); setEditProductId(itm) }} >Edit</button></div>
+                    </div>
+                    )
+                })
+            }
+        </div>
+        )
+    }
+    useEffect(() => {
         setRenderData(Object.keys(user.products))
-    },[user])
+    }, [user])
 
-    function RenderList({data}){
-return(<div>
-    {
-       data.map((itm,i)=>{
-           return(<div style={{display:'flex',marginBottom:'20px',padding:'18px',width:"50%",margin:"auto",boxShadow:'0 6.95652px 20.8696px rgb(0 0 0 / 5%)'}}>
-            <div style={{width:'30%'}} ><img style={{width:'111px'}} src={user.products[itm].image} alt='no img' /></div>
-            <div style={{width:'70%'}}  >
-            <div>{user.products[itm].name}</div>
-            <div>{user.products[itm].description}</div>
-            <div style={{display:'flex'}} >
-            <div style={{width:'50%'}}>{user.products[itm].price}</div>
-            <div style={{width:'50%'}} >{user.products[itm].quantity}</div>
-            </div>
-            </div>
-            <div><button onClick={()=>{setEditModal(true);setEditProductId(itm)}} >Edit</button></div>
-            </div>
-           )
-        })
-    }
-    </div>
-)
-    }
+    useEffect(() => {
+        Filtered();
+    }, [applyFilter])
+
     return (<>
-    <Modal
-    showModal={showModal}
-    setShowModal={setShowModal}
-    product_id={product_id}
-    LoggedInUser={LoggedInUser}
-    />
-    {editProductId&&
-    (<EditModal
-    editModal={editModal}
-    setEditModal={setEditModal}
-    product_id={editProductId}
-    product={user.products[editProductId]}
-    LoggedInUser={LoggedInUser}
-    />)}
+        <Modal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            product_id={product_id}
+            LoggedInUser={LoggedInUser}
+        />
+        {editProductId &&
+            (<EditModal
+                editModal={editModal}
+                setEditModal={setEditModal}
+                product_id={editProductId}
+                product={user.products[editProductId]}
+                LoggedInUser={LoggedInUser}
+            />)}
         <div>
-            welcome 
-            {user.name}
-            Home
-            <button onClick={logout}>Log-out</button>
-            {product_id==0 &&<div> no product yet!! add now</div>}
-            {product_id>0 &&(<div>
+            <div className='nav' ><div className='header' ><div> welcome {user.name}</div>
+            <button className='log-out' onClick={logout}>Log-out</button>
+            </div>
+            </div>
+           
+            {product_id == 0 && <div style={{paddingTop:'101px'}}> no product yet!! add now</div>}
+            {product_id > 0 && (<div style={{paddingTop:'101px'}}>
                 <SearchBar searchInp={searchInp}
-                 setSearchInp={setSearchInp}
-                 setMinPrice={setMinPrice}
-                 setMaxPrice={setMaxPrice}
-                 setMinQuantity={setMinQuantity}
-                 setMaxQuantity={setMaxQuantity}
-                 Filtered={Filtered}
-                 setRenderData={setRenderData}
-                 renderData={renderData}
-                 />
-                {/* {!searchInp&&
-               (<div> {
-                    Object.keys(user.products).map((itm,i)=>{
-                       return(<div style={{display:'flex',marginBottom:'20px',padding:'18px',width:"50%",margin:"auto",boxShadow:'0 6.95652px 20.8696px rgb(0 0 0 / 5%)'}}>
-                        <div style={{width:'30%'}} ><img style={{width:'111px'}} src={user.products[itm].image} alt='no img' /></div>
-                        <div style={{width:'70%'}}  >
-                        <div>{user.products[itm].name}</div>
-                        <div>{user.products[itm].description}</div>
-                        <div style={{display:'flex'}} >
-                        <div style={{width:'50%'}}>{user.products[itm].price}</div>
-                        <div style={{width:'50%'}} >{user.products[itm].quantity}</div>
-                        </div>
-                        </div>
-                        <div><button onClick={()=>{setEditModal(true);setEditProductId(itm)}} >Edit</button></div>
-                        </div>
-                       )
-                    })
-                }
-
-
-            </div>)}
-            {searchInp&&
-               (<div> 
-                   <Filtered/>
-            </div>)} */}
-{renderData&& <RenderList data={renderData} />}
+                    setSearchInp={setSearchInp}
+                    setMaxPrice={setMaxPrice}
+                    setMaxQuantity={setMaxQuantity}
+                    filterByPrice={filterByPrice}
+                    maxQuantity={maxQuantity}
+                    maxPrice={maxPrice}
+                    Filtered={Filtered}
+                    setRenderData={setRenderData}
+                    renderData={renderData}
+                    setApplyFilter={setApplyFilter}
+                />
+                {renderData && <RenderList data={renderData} />}
             </div>)
             }
-            <button onClick={()=>setShowModal(true)} >add</button>
-            </div>
+            <button className='add-btn' onClick={() => setShowModal(true)} >+ add</button>
+        </div>
 
-        </>
+    </>
     )
 }
-export default Home
+export default React.memo(Home)

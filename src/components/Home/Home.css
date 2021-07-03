@@ -1,7 +1,8 @@
 .modal-container{
-    position:absolute;
+    position:fixed;
     width: 100%;
     height: 100%;
+    z-index: 2;
     background-color: #000000ab
 }
 .main-container{
@@ -12,19 +13,119 @@
     margin-top: 50px;
     background: white;
 }
-
-.edit-modal-container{
-    position:absolute;
+.nav{
+    box-shadow: rgb(0 0 0 / 10%) 0px 6.95652px 20.8696px;
+    /* text-align: left; */
+    height: 63px;
+    margin-bottom: 18px;
+    padding-top: 12px;
+    position: fixed;
     width: 100%;
-    height: 100%;
-    background-color: #000000ab
+    /* z-index: 24; */
+    background: white;
+}
+.header{
+    width: 79%;
+    margin: auto;
+    font-size: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.log-out{
+    width: 87px;
+    border: none;
+    background: #f70b0bb8;
+    border-radius: 15px;
+    font-weight: 600;
+    
+}
+.log-out:hover{
+    background-color: #f70b0b70;
+}
+.search-inp{
+    width: 53%;
+    height: 27px;
+    border-radius: 8px;
 }
 
+.edit-modal-container{
+    position:fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: #000000ab
+}
 .edit-main-container{
-    position: relative;
-    width: 300px;
-    /* height: 300px; */
+    background: white;
+    border-radius: 16px;
+    width: 522px;
+    padding: 29px;
     margin: auto;
     margin-top: 50px;
-    background: white;
+}
+
+.edit-input-container{
+    height: 64px;
+}
+
+.edit-main-container >input{
+    margin-top: 4px;
+}
+.edit-main-container >:nth-child(2){
+    position: relative;
+    
+    display: flex;
+    /* height: 300px; */
+    justify-content: center;
+    grid-column-gap: 14px;
+}
+
+.product-container{
+    display: flex;
+    margin: auto;
+    padding: 18px;
+    width: 50%;
+    box-shadow: rgb(0 0 0 / 5%) 0px 6.95652px 20.8696px;
+    text-align: left;
+    margin-bottom: 11px;
+    min-height: 112px;
+
+}
+
+.edit-btn{
+    width: 61px;
+    color: white;
+    background: black;
+    border: none;
+    border-radius: 14px;
+    height: 32px;
+}
+.edit-btn:hover{
+    background: rgba(0, 0, 0, 0.671);
+}
+
+.add-btn:hover{
+    background: #8888cc70
+}
+.add-btn{
+    width: 100px;
+    height: 44px;
+    border-radius: 23px;
+    background: #8a8adf70;
+    border: none;
+    box-shadow: rgb(0 0 0 / 15%) 0px 6.95652px 20.8696px;
+    /* text-align: left; */
+    font-size: 19px;
+}
+
+.save-btn{
+    width: 166px;
+    height: 38px;
+    border-radius: 11px;
+    border: navajowhite;
+    background: #0080004f;
+    font-weight: 800;
+}
+.save-btn:hover{
+    background-color: #126c1278 ;
 }
